@@ -5,7 +5,7 @@
     "PatronId": 1,
     "LoanDate": "2025-06-10T10:00:00",
     "DueDate": "2025-06-24T10:00:00",
-    "ReturnDate": null
+    "ReturnDate": "2026-02-03T10:43:59.988325"
   },
   {
     "Id": 2,
@@ -478,5 +478,21 @@
     "LoanDate": "2025-05-15T10:00:00",
     "DueDate": "2025-05-29T10:00:00",
     "ReturnDate": "2025-05-24T10:00:00"
+  },
+  {
+    "Id": 61,
+    "BookItemId": 1,
+    "PatronId": 41,
+    "LoanDate": "2026-02-03T11:11:36.946028",
+    "DueDate": "2026-02-17T11:11:36.946028",
+    "ReturnDate": null
+  },
+  {
+    "Id": 62,
+    "BookItemId": 17,
+    "PatronId": 42,
+    "LoanDate": "2026-02-03T11:13:53.043456",
+    "DueDate": "2026-02-17T11:13:53.043456",
+    "ReturnDate": null
   }
 ]

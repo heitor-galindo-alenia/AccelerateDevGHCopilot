@@ -231,10 +231,11 @@ class ConsoleApp:
                 selected_book = matching_books[0]
 
             # Find all book items (copies) for this book
-            book_item_ids = [
-                item.id for item in book_items
+            book_item_objs = [
+                item for item in book_items
                 if getattr(item, 'book_id', None) == selected_book.id
             ]
+            book_item_ids = [item.id for item in book_item_objs]
             if not book_item_ids:
                 print("No copies found for this book.")
                 choice = input("Search again? (y/n): ").strip().lower()
@@ -251,6 +252,33 @@ class ConsoleApp:
 
             if len(on_loan) < len(book_item_ids):
                 print(f"'{selected_book.title}' is available for loan.")
+                # Find the first available book item
+                loaned_item_ids = [loan.book_item_id for loan in on_loan]
+                available_items = [item for item in book_item_objs if item.id not in loaned_item_ids]
+                # Prompt for checkout
+                choice = input("Would you like to check out this book? (y/n): ").strip().lower()
+                if choice == 'y':
+                    patron = self.selected_patron_details
+                    if not patron:
+                        print("No patron selected.")
+                        return ConsoleState.PATRON_DETAILS
+                    # Use the first available item
+                    book_item = available_items[0]
+                    self._loan_service.checkout_book(patron, book_item)
+                    print(f"Book '{selected_book.title}' checked out successfully.")
+                    # Refresh data
+                    if self._json_data:
+                        self._json_data.load_data()
+                        self._books = self._json_data.books
+                        self._book_items = self._json_data.book_items
+                        self._loans = self._json_data.loans
+                    return ConsoleState.PATRON_DETAILS
+                else:
+                    search_again = input("Search again? (y/n): ").strip().lower()
+                    if search_again == 'y':
+                        continue
+                    else:
+                        return ConsoleState.PATRON_DETAILS
             else:
                 # All copies are on loan, show due dates
                 due_dates = [getattr(loan, 'due_date', 'Unknown') for loan in on_loan]
