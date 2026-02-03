@@ -23,7 +23,8 @@ def main():
         loan_service=loan_service,
         patron_service=patron_service,
         patron_repository=patron_repo,
-        loan_repository=loan_repo
+        loan_repository=loan_repo,
+        json_data=json_data
     )
     app.run()
 
